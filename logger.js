@@ -57,6 +57,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // List of dummy collaborators
+    const collaborators = ['@abdellah', '@sara_dev', '@git_master', '@coder_alex', '@debug_wiz'];
+
+    // Handle issue assignment
+    const assignButtons = document.querySelectorAll('.assign-btn');
+    assignButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const issueItem = e.target.closest('.issue-item');
+            const issueTitle = issueItem.querySelector('h3').textContent;
+            const issueTag = issueItem.querySelector('.issue-tag').textContent;
+
+            const randomCollaborator = collaborators[Math.floor(Math.random() * collaborators.length)];
+
+            addLog(`Assigned ${issueTag} ("${issueTitle}") to ${randomCollaborator}`, 'info');
+
+            // Visual feedback on button
+            const originalText = button.textContent;
+            button.textContent = `Assigned to ${randomCollaborator}`;
+            button.disabled = true;
+            button.classList.add('assigned');
+
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.disabled = false;
+                button.classList.remove('assigned');
+            }, 5000);
+        });
+    });
+
     // Export log function to window for global access
     window.gitLogger = { log: addLog };
 });
